@@ -1,0 +1,4 @@
+{
+	"shell_cmd": "npm run gulp",
+	"file_regex": "(.*\\.js)\\((\\d*),(\\d*)\\)\\s*:\\s*(.*)",
+}

@@ -1,4 +1,5 @@
 /* @flow */
+type XX = X;
 (function (){
     let a = 0;
     let b: number = 0;
@@ -23,20 +24,32 @@
 })();
 
 class MyClass {
-    myFunction(arg: string) : number {
+    myFunction(arg: ?string = 'test') : number {
         let a: Array<number> = [42, 43];
         const b: number = a[0];
 
         var bool: boolean = !!a;
 
-        return 42;
+        
+
+        return arg ? arg.length : 0;
     };
 }
 
 let constructor: Class<MyClass> = MyClass;
 var d = MyClass;
-let b: MyClass = new d();
+let bbb: MyClass = new d();
 
 let func: Function = p => p;
 
-let someClass: {myFunction: (arg: string) => number} = new MyClass();
+let someClass: {myFunction: (arg: ?string) => number} = new MyClass();
+
+class X {
+  static bar(): string {
+    return 'Hi';
+  }
+}
+var a: XX = new X();
+
+var b: typeof X = X;
+b.bar(); // Good

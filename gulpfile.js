@@ -40,6 +40,7 @@ var es6BabelPlugins = [
     'transform-es2015-typeof-symbol',
     'transform-es2015-unicode-regex',
     'transform-regenerator',
+    'transform-class-properties',
     'syntax-flow'
 ];
 
@@ -81,7 +82,7 @@ gulp.task('default', ['react'], function() {
 gulp.task('react', ['typecheck'], function(){
     return gulp.src([sourceDir + jsExt, sourceDir + jsxExt])
         .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(babel({presets: ['es2015', 'react']}))
+        .pipe(babel({presets: ['es2015', 'react'], plugins: ['transform-class-properties']}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(buildDir + 'dist'));
 

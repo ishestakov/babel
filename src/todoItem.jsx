@@ -1,9 +1,14 @@
 import React from 'react';
+import keys from './keys.js'
 
 export default class TodoItem extends React.Component {
 	constructor (props) {
 		super(props);
 		this.state = {editText: props.todo.title};
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
+		this.handleKeyDown = this.handleKeyDown.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -22,10 +27,10 @@ export default class TodoItem extends React.Component {
 	}
 
 	handleKeyDown(event) {
-		if (event.which === ESCAPE_KEY) {
+		if (event.which === keys.ESCAPE_KEY) {
 			this.setState({editText: this.props.todo.title});
 			this.props.onCancel(event);
-		} else if (event.which === ENTER_KEY) {
+		} else if (event.which === keys.ENTER_KEY) {
 			this.handleSubmit(event);
 		}
 	}

@@ -1,8 +1,9 @@
 import React from 'react';
 
-class TodoItem extends React.Component {
+export default class TodoItem extends React.Component {
 	constructor (props) {
 		super(props);
+		this.state = {editText: props.todo.title};
 	}
 
 	handleSubmit(event) {
@@ -14,7 +15,7 @@ class TodoItem extends React.Component {
 				this.props.onDestroy();
 			}
 	}
-	
+
 	handleEdit() {
 		this.props.onEdit();
 		this.setState({editText: this.props.todo.title});
@@ -33,10 +34,6 @@ class TodoItem extends React.Component {
 		if (this.props.editing) {
 			this.setState({editText: event.target.value});
 		}
-	}
-
-	getInitialState() {
-		return {editText: this.props.todo.title};
 	}
 
 	/**
@@ -70,10 +67,7 @@ class TodoItem extends React.Component {
 
 	render() {
 		return (
-			<li className={classNames({
-				completed: this.props.todo.completed,
-				editing: this.props.editing
-			})}>
+			<li className="class">
 				<div className="view">
 					<input
 						className="toggle"
@@ -98,3 +92,4 @@ class TodoItem extends React.Component {
 		);
 	}
 }
+

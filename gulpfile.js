@@ -6,6 +6,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var flow = require('gulp-flowtype');
 var sourcemapReporter = require('jshint-sourcemap-reporter');
 var clean = require('gulp-clean');
+var webpack = require('webpack-stream');
+var through = require('through2');
 
 var buildDir = 'build/';
 var jsExt = '**/*.js';
@@ -53,7 +55,27 @@ var getFlowTypeUnsupportedPlugins = function() {
     });
 }
 
-gulp.task('default', ['react']);
+gulp.task('default', ['react'], function() {
+    return gulp.src(buildDir + 'dist/**/*.js')
+        .pipe(webpack({
+            entry: './build/dist/app.js',
+            devtool: 'source-map',
+            output: {
+                filename: 'bundle.js'
+            }
+        }))
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(through.obj(function(file, enc, callback){
+            var isSourceMap = /\.map$/.test(file.path);
+            if (!isSourceMap) {
+                this.push(file);
+            }
+            callback();
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(buildDir + 'webpack'))
+
+});
 
 
 gulp.task('react', ['typecheck'], function(){

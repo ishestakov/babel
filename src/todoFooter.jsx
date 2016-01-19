@@ -10,7 +10,7 @@ export default class TodoFooter extends React.Component<void, any, any> {
 
 			if (this.props.completedCount > 0) {
 				clearButton = (
-					<button
+					<button id="clear-completed"
 						className="clear-completed"
 						onClick={this.props.onClearCompleted}>
 						Clear completed
@@ -20,11 +20,11 @@ export default class TodoFooter extends React.Component<void, any, any> {
 
 			var nowShowing = this.props.nowShowing;
 			return (
-				<footer className="footer">
-					<span className="todo-count">
+				<footer id="footer" className="footer">
+					<span id="todo-count" className="todo-count">
 						<strong>{this.props.count}</strong> {activeTodoWord} left
 					</span>
-					<ul className="filters">
+					<ul id="filters" className="filters">
 						<li>
 							<a
 								href="#/"

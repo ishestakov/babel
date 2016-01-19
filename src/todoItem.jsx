@@ -1,7 +1,8 @@
 /* @flow weak */
 
 import React from 'react';
-import keys from './keys.js'
+import ReactDOM from 'react-dom';
+import keys from './keys.js';
 
 export default class TodoItem extends React.Component {
 	constructor (props) {
@@ -66,7 +67,7 @@ export default class TodoItem extends React.Component {
 	 */
 	componentDidUpdate(prevProps) {
 		if (!prevProps.editing && this.props.editing) {
-			var node = React.findDOMNode(this.refs.editField);
+			var node = ReactDOM.findDOMNode(this.refs.editField);
 			node.focus();
 			node.setSelectionRange(node.value.length, node.value.length);
 		}

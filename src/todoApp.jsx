@@ -136,14 +136,14 @@ export default class TodoApp extends React.Component<void, Props, AppState> {
 
 		if (todos.length) {
 			main = (
-				<section className="main">
-					<input
+				<section id="main" className="main">
+					<input id="toggle-all"
 						className="toggle-all"
 						type="checkbox"
 						onChange={this.toggleAll.bind(this)}
 						checked={activeTodoCount === 0}
 					/>
-					<ul className="todo-list">
+					<ul id="todo-list" className="todo-list">
 						{todoItems}
 					</ul>
 				</section>
@@ -152,9 +152,9 @@ export default class TodoApp extends React.Component<void, Props, AppState> {
 
 		return (
 			<div>
-				<header className="header">
+				<header id="header" className="header">
 					<h1>todos</h1>
-					<input
+					<input id="new-todo"
 						className="new-todo"
 						placeholder="What needs to be done?"
 						value={this.state.newTodo}

@@ -90,7 +90,7 @@ gulp.task('react', ['typecheck'], function(){
 
 });
 
-gulp.task('typecheck', ['es6:flow:transpile'], function() {
+gulp.task('typecheck', ['es6:flow:transpile'], function(cb) {
     return gulp.src([typecheckDir + jsExt, typecheckDir + jsxExt])
         .pipe(flow({
                 abort: true,
@@ -100,7 +100,9 @@ gulp.task('typecheck', ['es6:flow:transpile'], function() {
                     }
                 }
             })
-        )
+        ).on('error', function(error) {console.log(error); throw new Error(err)})
+        .on('end', cb)
+        .emit('end');
         
 });
 

@@ -1,7 +1,9 @@
+/* @flow weak */
 import React from 'react';
 import Utils from './utils.js'
+import State from './state.js'
 
-export default class TodoFooter extends React.Component {
+export default class TodoFooter extends React.Component<void, any, any> {
 	render() {
 			var activeTodoWord = Utils.pluralize(this.props.count, 'item');
 			var clearButton = null;
@@ -26,7 +28,7 @@ export default class TodoFooter extends React.Component {
 						<li>
 							<a
 								href="#/"
-								className={classNames({selected: nowShowing === app.ALL_TODOS})}>
+								className={classNames({selected: nowShowing === State.ALL_TODOS})}>
 									All
 							</a>
 						</li>
@@ -34,7 +36,7 @@ export default class TodoFooter extends React.Component {
 						<li>
 							<a
 								href="#/active"
-								className={classNames({selected: nowShowing === app.ACTIVE_TODOS})}>
+								className={classNames({selected: nowShowing === State.ACTIVE_TODOS})}>
 									Active
 							</a>
 						</li>
@@ -42,7 +44,7 @@ export default class TodoFooter extends React.Component {
 						<li>
 							<a
 								href="#/completed"
-								className={classNames({selected: nowShowing === app.COMPLETED_TODOS})}>
+								className={classNames({selected: nowShowing === State.COMPLETED_TODOS})}>
 									Completed
 							</a>
 						</li>

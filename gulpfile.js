@@ -41,12 +41,14 @@ var es6BabelPlugins = [
     'transform-es2015-unicode-regex',
     'transform-regenerator',
     'transform-class-properties',
-    'syntax-flow'
+    'syntax-flow',
+    'syntax-jsx'
 ];
 
 var flowEs6SupportedPlugins = [
     'transform-es2015-arrow-functions',
-    'transform-es2015-classes'
+    'transform-es2015-classes',
+    'transform-es2015-modules-commonjs'
 ];
 
 
@@ -105,7 +107,7 @@ gulp.task('typecheck', ['es6:flow:transpile'], function() {
 gulp.task('es6:flow:transpile', function(callback) {
     gulp.src([sourceDir + jsExt, sourceDir + jsxExt])
         .pipe(sourcemaps.init())
-        .pipe(babel({"plugins": getFlowTypeUnsupportedPlugins(), 'presets': 'react'}))
+        .pipe(babel({"plugins": getFlowTypeUnsupportedPlugins()}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(typecheckDir))
         .on('error', callback)

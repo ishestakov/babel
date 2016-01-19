@@ -1,3 +1,5 @@
+/* @flow weak */
+
 import React from 'react';
 import keys from './keys.js'
 
@@ -11,7 +13,7 @@ export default class TodoItem extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleSubmit(event) {
+	handleSubmit = (event) => {
 			var val = this.state.editText.trim();
 			if (val) {
 				this.props.onSave(val);
@@ -19,27 +21,27 @@ export default class TodoItem extends React.Component {
 			} else {
 				this.props.onDestroy();
 			}
-	}
+	};
 
-	handleEdit() {
+	handleEdit = () => {
 		this.props.onEdit();
 		this.setState({editText: this.props.todo.title});
-	}
+	};
 
-	handleKeyDown(event) {
+	handleKeyDown = (event) => {
 		if (event.which === keys.ESCAPE_KEY) {
 			this.setState({editText: this.props.todo.title});
 			this.props.onCancel(event);
 		} else if (event.which === keys.ENTER_KEY) {
 			this.handleSubmit(event);
 		}
-	}
+	};
 
-	handleChange(event) {
+	handleChange = (event) => {
 		if (this.props.editing) {
 			this.setState({editText: event.target.value});
 		}
-	}
+	};
 
 	/**
 	 * This is a completely optional performance enhancement that you can

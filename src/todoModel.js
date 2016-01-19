@@ -1,22 +1,31 @@
+
+
 import Utils from './utils.js';
 
 export default class TodoModel {
-	constructor(key) {
+
+	key: string;
+	static todos: any;
+	onChanges: Array<any>;
+
+	constructor(key: string) {
 		this.key = key;
 		this.todos = Utils.store(key);
 		this.onChanges = [];
 	}
 
+	
+
 	subscribe(onChange) {
 		this.onChanges.push(onChange);
 	}
 
-	inform() {
+	inform ()  {
 		Utils.store(this.key, this.todos);
 		this.onChanges.forEach(function (cb) { cb(); });
 	}
 
-	addTodo(title) {
+	addTodo (title) {
 		this.todos = this.todos.concat({
 			id: Utils.uuid(),
 			title: title,
@@ -26,7 +35,7 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	toggleAll(checked) {
+	toggleAll (checked)  {
 		// Note: it's usually better to use immutable data structures since they're
 		// easier to reason about and React works very well with them. That's why
 		// we use map() and filter() everywhere instead of mutating the array or
@@ -39,7 +48,7 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	toggle(todoToToggle) {
+	toggle (todoToToggle)  {
 		this.todos = this.todos.map(function (todo) {
 			return todo !== todoToToggle ?
 				todo :
@@ -49,7 +58,7 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	destroy(todo) {
+	destroy (todo) {
 		this.todos = this.todos.filter(function (candidate) {
 			return candidate !== todo;
 		});
@@ -57,7 +66,7 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	save(todoToSave, text) {
+	save (todoToSave, text)  {
 		this.todos = this.todos.map(function (todo) {
 			return todo !== todoToSave ? todo : Utils.extend({}, todo, {title: text});
 		});
@@ -65,7 +74,7 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	clearCompleted() {
+	clearCompleted ()  {
 		this.todos = this.todos.filter(function (todo) {
 			return !todo.completed;
 		});

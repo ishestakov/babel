@@ -1,5 +1,5 @@
 let Utils = {
-		uuid: function () {
+		uuid: function (): string {
 			/*jshint bitwise:false */
 			var i, random;
 			var uuid = '';
@@ -16,11 +16,11 @@ let Utils = {
 			return uuid;
 		},
 
-		pluralize: function (count, word) {
+		pluralize: function (count: number, word: string): string {
 			return count === 1 ? word : word + 's';
 		},
 
-		store: function (namespace, data) {
+		store: function (namespace, data): any {
 			if (data) {
 				return localStorage.setItem(namespace, JSON.stringify(data));
 			}
@@ -29,7 +29,7 @@ let Utils = {
 			return (store && JSON.parse(store)) || [];
 		},
 
-		extend: function () {
+		extend: function (): any {
 			var newObj = {};
 			for (var i = 0; i < arguments.length; i++) {
 				var obj = arguments[i];

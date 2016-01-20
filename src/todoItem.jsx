@@ -3,33 +3,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import keys from './keys.js';
+import classNames from 'classnames';
 
 export default class TodoItem extends React.Component {
 	constructor (props) {
 		super(props);
 		this.state = {editText: props.todo.title};
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleEdit = this.handleEdit.bind(this);
-		this.handleKeyDown = this.handleKeyDown.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleSubmit = (event) => {
-			var val = this.state.editText.trim();
-			if (val) {
-				this.props.onSave(val);
-				this.setState({editText: val});
-			} else {
-				this.props.onDestroy();
-			}
+	handleSubmit(event)  {
+		var val = this.state.editText.trim();
+		if (val) {
+			this.props.onSave(val);
+			this.setState({editText: val});
+		} else {
+			this.props.onDestroy();
+		}
 	};
 
-	handleEdit = () => {
+	handleEdit() {
 		this.props.onEdit();
 		this.setState({editText: this.props.todo.title});
 	};
 
-	handleKeyDown = (event) => {
+	handleKeyDown(event) {
 		if (event.which === keys.ESCAPE_KEY) {
 			this.setState({editText: this.props.todo.title});
 			this.props.onCancel(event);
@@ -38,7 +35,7 @@ export default class TodoItem extends React.Component {
 		}
 	};
 
-	handleChange = (event) => {
+	handleChange(event) {
 		if (this.props.editing) {
 			this.setState({editText: event.target.value});
 		}
@@ -84,20 +81,20 @@ export default class TodoItem extends React.Component {
 						className="toggle"
 						type="checkbox"
 						checked={this.props.todo.completed}
-						onChange={this.props.onToggle}
+						onChange={this.props.onToggle.bind(this)}
 					/>
-					<label onDoubleClick={this.handleEdit}>
+					<label onDoubleClick={this.handleEdit.bind(this)}>
 						{this.props.todo.title}
 					</label>
-					<button className="destroy" onClick={this.props.onDestroy} />
+					<button className="destroy" onClick={this.props.onDestroy.bind(this)} />
 				</div>
 				<input
 					ref="editField"
 					className="edit"
 					value={this.state.editText}
-					onBlur={this.handleSubmit}
-					onChange={this.handleChange}
-					onKeyDown={this.handleKeyDown}
+					onBlur={this.handleSubmit.bind(this)}
+					onChange={this.handleChange.bind(this)}
+					onKeyDown={this.handleKeyDown.bind(this)}
 				/>
 			</li>
 		);

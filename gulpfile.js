@@ -101,8 +101,7 @@ gulp.task('typecheck', ['es6:flow:transpile'], function(cb) {
                 }
             })
         ).on('error', function(error) {console.log(error); throw new Error(err)})
-        .on('end', cb)
-        .emit('end');
+        
         
 });
 

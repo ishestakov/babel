@@ -1,10 +1,24 @@
-/* @flow weak */
+/* @flow  */
 import React from 'react';
-import Utils from './utils.js'
-import State from './state.js'
+import Utils from './utils';
+import State from './state';
+import classNames from 'classnames';
 
-export default class TodoFooter extends React.Component<void, any, any> {
-	render() {
+export class FooterProps {
+	completedNoCount: number;
+	onClearCompleted: ()=> any;
+	nowShowing: any;
+	count: string;
+};
+
+export default class TodoFooter extends React.Component <{}, FooterProps, {}> {
+	constructor(props: FooterProps) {
+		super(props);
+		this.props = props;
+	}
+
+	render(): void {
+			Utils.pluralize('', '');
 			var activeTodoWord = Utils.pluralize(this.props.count, 'item');
 			var clearButton = null;
 

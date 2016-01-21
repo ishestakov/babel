@@ -1,9 +1,10 @@
 [ignore]
-.*/node_modules/.*
 .*/dist/.*
 
 [include]
 .*/src
+./src
+./node_modules
 
 [libs]
 .*/lib

@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 import State from './state.js';
 import React from 'react';
 import {Router} from 'director';
@@ -7,20 +7,22 @@ import TodoItem from './todoItem.js';
 import TodoModel from './todoModel.js';
 import keys from './keys.js'
 
-type AppState = {
-	nowShowing: any,
-	editing: ?boolean,
-	newTodo: string
-};
+class AppState {
+	nowShowing: any;
+	editing: ?boolean;
+	newTodo: string;
+}
 
-type Props = {
-		model: TodoModel;
+class Props {
+	model: TodoModel;
 };
 
 
 export default class TodoApp extends React.Component<void, Props, AppState> {
+	props: Props;
 	constructor(props: Props) {
 		super(props);
+		this.props = props;
 		this.state = {
 			nowShowing: State.ALL_TODOS,
 			editing: null,
@@ -38,11 +40,11 @@ export default class TodoApp extends React.Component<void, Props, AppState> {
 		router.init('/');
 	}
 
-	handleChange (event) {
+	handleChange (event: Event) {
 			this.setState({newTodo: event.target.value});
 	}
 
-	handleNewTodoKeyDown (event) {
+	handleNewTodoKeyDown (event: Event) {
 		if (event.keyCode !== keys.ENTER_KEY) {
 			return;
 		}
@@ -52,29 +54,29 @@ export default class TodoApp extends React.Component<void, Props, AppState> {
 		var val = this.state.newTodo.trim();
 
 		if (val) {
-			this.props.model.addTodo(val);
+			this.props.model.addTodo(12);
 			this.setState({newTodo: ''});
 		}
 	}
 
-	toggleAll(event) {
+	toggleAll(event: Event) {
 		var checked = event.target.checked;
 		this.props.model.toggleAll(checked);
 	}
 
-	toggle(todoToToggle) {
+	toggle(todoToToggle: Todo) {
 		this.props.model.toggle(todoToToggle);
 	}
 
-	destroy(todo) {
+	destroy(todo: Todo) {
 		this.props.model.destroy(todo);
 	}
 
-	edit(todo) {
+	edit(todo: Todo) {
 		this.setState({editing: todo.id});
 	}
 
-	save(todoToSave, text) {
+	save(todoToSave: Todo, text: string) {
 		this.props.model.save(todoToSave, text);
 		this.setState({editing: null});
 	}
@@ -87,7 +89,7 @@ export default class TodoApp extends React.Component<void, Props, AppState> {
 		this.props.model.clearCompleted();
 	}
 
-	render () {
+	render(): any {
 		var footer;
 		var main;
 		var todos = this.props.model.todos;

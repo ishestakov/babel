@@ -1,3 +1,4 @@
+/* @flow */
 let state = {
 	ALL_TODOS: Symbol(),
 	ACTIVE_TODOS: Symbol(),

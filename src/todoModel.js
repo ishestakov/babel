@@ -1,11 +1,15 @@
+/* @flow */
+import Utils from './utils';
 
+declare type Todo = {
+	id: string,
+	title: string,
+	completed: boolean
+};
 
-import Utils from './utils.js';
-
-export default class TodoModel {
-
+class TodoModel {
 	key: string;
-	static todos: any;
+	todos: Array<Todo>;
 	onChanges: Array<any>;
 
 	constructor(key: string) {
@@ -14,9 +18,7 @@ export default class TodoModel {
 		this.onChanges = [];
 	}
 
-	
-
-	subscribe(onChange) {
+	subscribe(onChange: any) {
 		this.onChanges.push(onChange);
 	}
 
@@ -25,7 +27,7 @@ export default class TodoModel {
 		this.onChanges.forEach(function (cb) { cb(); });
 	}
 
-	addTodo (title) {
+	addTodo (title: string) {
 		this.todos = this.todos.concat({
 			id: Utils.uuid(),
 			title: title,
@@ -35,50 +37,47 @@ export default class TodoModel {
 		this.inform();
 	}
 
-	toggleAll (checked)  {
+	toggleAll (checked: boolean)  {
 		// Note: it's usually better to use immutable data structures since they're
 		// easier to reason about and React works very well with them. That's why
 		// we use map() and filter() everywhere instead of mutating the array or
 		// todo items themselves.
 
-		this.todos = this.todos.map(function (todo) {
+		this.todos = this.todos.map(function (todo: Todo) {
 			return Utils.extend({}, todo, {completed: checked});
 		});
-
 		this.inform();
 	}
 
-	toggle (todoToToggle)  {
-		this.todos = this.todos.map(function (todo) {
+	toggle (todoToToggle: Todo)  {
+		this.todos = this.todos.map(function (todo: Todo) {
 			return todo !== todoToToggle ?
 				todo :
 				Utils.extend({}, todo, {completed: !todo.completed});
 		});
-
 		this.inform();
 	}
 
-	destroy (todo) {
-		this.todos = this.todos.filter(function (candidate) {
+	destroy (todo: Todo) {
+		this.todos = this.todos.filter(function (candidate: Todo) {
 			return candidate !== todo;
 		});
-
 		this.inform();
 	}
 
-	save (todoToSave, text)  {
-		this.todos = this.todos.map(function (todo) {
+	save (todoToSave: Todo, text: string)  {
+		this.todos = this.todos.map(function (todo: Todo) {
 			return todo !== todoToSave ? todo : Utils.extend({}, todo, {title: text});
 		});
-
 		this.inform();
 	}
 
 	clearCompleted ()  {
-		this.todos = this.todos.filter(function (todo) {
+		this.todos = this.todos.filter(function (todo: Todo) {
 			return !todo.completed;
 		});
-
 		this.inform();		
 	}
 }	
+
+export {TodoModel as default};

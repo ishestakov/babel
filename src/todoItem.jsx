@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,13 +6,13 @@ import keys from './keys.js';
 import classNames from 'classnames';
 
 export default class TodoItem extends React.Component {
-	constructor (props) {
+	constructor (props: any) {
 		super(props);
 		this.state = {editText: props.todo.title};
 	}
 
-	handleSubmit(event)  {
-		var val = this.state.editText.trim();
+	handleSubmit(event: Event)  {
+		const val = this.state.editText.trim();
 		if (val) {
 			this.props.onSave(val);
 			this.setState({editText: val});
@@ -26,7 +26,7 @@ export default class TodoItem extends React.Component {
 		this.setState({editText: this.props.todo.title});
 	};
 
-	handleKeyDown(event) {
+	handleKeyDown(event: Event) {
 		if (event.which === keys.ESCAPE_KEY) {
 			this.setState({editText: this.props.todo.title});
 			this.props.onCancel(event);
@@ -35,7 +35,7 @@ export default class TodoItem extends React.Component {
 		}
 	};
 
-	handleChange(event) {
+	handleChange(event: Event) {
 		if (this.props.editing) {
 			this.setState({editText: event.target.value});
 		}
@@ -48,7 +48,7 @@ export default class TodoItem extends React.Component {
 	 * just use it as an example of how little code it takes to get an order
 	 * of magnitude performance improvement.
 	 */
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: Todo, nextState: any): boolean {
 		return (
 			nextProps.todo !== this.props.todo ||
 			nextProps.editing !== this.props.editing ||
@@ -62,7 +62,7 @@ export default class TodoItem extends React.Component {
 	 * For more info refer to notes at https://facebook.github.io/react/docs/component-api.html#setstate
 	 * and https://facebook.github.io/react/docs/component-specs.html#updating-componentdidupdate
 	 */
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: any) {
 		if (!prevProps.editing && this.props.editing) {
 			var node = ReactDOM.findDOMNode(this.refs.editField);
 			node.focus();
@@ -70,7 +70,7 @@ export default class TodoItem extends React.Component {
 		}
 	}
 
-	render() {
+	render(): any {
 		return (
 			<li className={classNames({
 					completed: this.props.todo.completed,

@@ -8,6 +8,7 @@ var sourcemapReporter = require('jshint-sourcemap-reporter');
 var clean = require('gulp-clean');
 var webpack = require('webpack-stream');
 var through = require('through2');
+var plumber = require('gulp-plumber');
 
 var buildDir = 'build/';
 var jsExt = '**/*.js';
@@ -16,47 +17,6 @@ var sourceDir = 'src/';
 var typecheckDir = buildDir + 'flow_check/';
 
 var currentDir = process.cwd();
-
-// Skip class transformation for flowtype checks as Flow understand classes but doesnt' understand other es6 features.
-var es6BabelPlugins = [
-    'check-es2015-constants',
-    'transform-es2015-arrow-functions',
-    'transform-es2015-classes',
-    'transform-es2015-arrow-functions',
-    'transform-es2015-block-scoped-functions',
-    'transform-es2015-block-scoping',
-    'transform-es2015-computed-properties',
-    'transform-es2015-destructuring',
-    'transform-es2015-for-of',
-    'transform-es2015-function-name',
-    'transform-es2015-literals',
-    'transform-es2015-modules-commonjs',
-    'transform-es2015-object-super',
-    'transform-es2015-parameters',
-    'transform-es2015-shorthand-properties',
-    'transform-es2015-spread',
-    'transform-es2015-sticky-regex',
-    'transform-es2015-template-literals',
-    'transform-es2015-typeof-symbol',
-    'transform-es2015-unicode-regex',
-    'transform-regenerator',
-    'transform-class-properties',
-    'syntax-flow',
-    'syntax-jsx'
-];
-
-var flowEs6SupportedPlugins = [
-    'transform-es2015-arrow-functions',
-    'transform-es2015-classes',
-    'transform-es2015-modules-commonjs'
-];
-
-
-var getFlowTypeUnsupportedPlugins = function() {
-    return es6BabelPlugins.filter(function(item) {
-        return flowEs6SupportedPlugins.indexOf(item) === -1;
-    });
-}
 
 gulp.task('default', ['react'], function() {
     return gulp.src(buildDir + 'dist/**/*.js')
@@ -81,38 +41,21 @@ gulp.task('default', ['react'], function() {
 });
 
 
-gulp.task('react', ['typecheck'], function(){
+gulp.task('react',  function(){
     return gulp.src([sourceDir + jsExt, sourceDir + jsxExt])
+        .pipe(plumber())
+        .pipe(
+            flow({
+                all: true,
+                abort: false,
+                killFlow: true
+            })
+        )
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(babel({presets: ['es2015', 'react'], plugins: ['transform-class-properties']}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(buildDir + 'dist'));
 
-});
-
-gulp.task('typecheck', ['es6:flow:transpile'], function(cb) {
-    return gulp.src([typecheckDir + jsExt, typecheckDir + jsxExt])
-        .pipe(flow({
-                abort: true,
-                reporter: {
-                    reporter: function(errors) {
-                        return sourcemapReporter.reporter(errors, { sourceRoot: currentDir + '/' + sourceDir });
-                    }
-                }
-            })
-        ).on('error', function(error) {console.log(error); throw new Error(err)})
-        
-        
-});
-
-gulp.task('es6:flow:transpile', function(callback) {
-    gulp.src([sourceDir + jsExt, sourceDir + jsxExt])
-        .pipe(sourcemaps.init())
-        .pipe(babel({"plugins": getFlowTypeUnsupportedPlugins()}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(typecheckDir))
-        .on('error', callback)
-        .on('end', callback);
 });
 
 gulp.task('clean', function(){

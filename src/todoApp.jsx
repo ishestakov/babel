@@ -2,24 +2,26 @@
 import State from './state.js';
 import React from 'react';
 import {Router} from 'director';
-import TodoFooter from './todoFooter.js';
-import TodoItem from './todoItem.js';
-import TodoModel from './todoModel.js';
+import TodoFooter from './todoFooter';
+import TodoItem from './todoItem';
+import TodoModel from './todoModel';
 import keys from './keys.js'
 
-class AppState {
+type AppState = {
 	nowShowing: any;
 	editing: ?boolean;
-	newTodo: string;
-}
+	newwTodo: string;
+};
 
 class Props {
-	model: TodoModel;
+	modell: TodoModel;
 };
 
 
-export default class TodoApp extends React.Component<void, Props, AppState> {
+export default class TodoApp extends React.Component {
 	props: Props;
+	state: AppState;
+	static defaultProps: {};
 	constructor(props: Props) {
 		super(props);
 		this.props = props;

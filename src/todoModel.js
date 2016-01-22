@@ -1,7 +1,7 @@
 /* @flow */
 import Utils from './utils';
 
-declare type Todo = {
+declare class Todo {
 	id: string,
 	title: string,
 	completed: boolean

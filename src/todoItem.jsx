@@ -2,11 +2,32 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import keys from './keys.js';
+import keys from './keys';
 import classNames from 'classnames';
+import TodoModel from './todoModel';
 
-export default class TodoItem extends React.Component {
-	constructor (props: any) {
+type TodoItemProps = {
+	todo: Todo;
+	editing: ?boolean;
+// callback methods	
+	onEdit: () => any;
+	onCancel: () => any;
+	onToggle: () => any;
+	onDestroy: () => any;
+	onSave: () => any;
+};
+
+declare class TodoItemState {
+	editText: string;
+};
+
+type Todo = Todo;
+
+
+export default class TodoItem extends React.Component<void, TodoItemProps, TodoItemState> {
+	state: TodoItemState;
+	props: TodoItemProps;
+	constructor (props: TodoItemProps) {
 		super(props);
 		this.state = {editText: props.todo.title};
 	}
@@ -36,7 +57,7 @@ export default class TodoItem extends React.Component {
 	};
 
 	handleChange(event: Event) {
-		if (this.props.editing) {
+		if (this.props.editing && event.target instanceof HTMLInputElement) {
 			this.setState({editText: event.target.value});
 		}
 	};

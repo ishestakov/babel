@@ -5,20 +5,19 @@ import State from './state';
 import classNames from 'classnames';
 
 export class FooterProps {
-	completedNoCount: number;
+	completedCount: number;
 	onClearCompleted: ()=> any;
 	nowShowing: any;
-	count: string;
+	count: number;
 };
 
-export default class TodoFooter extends React.Component <{}, FooterProps, {}> {
+export default class TodoFooter extends React.Component <void, FooterProps, void> {
 	constructor(props: FooterProps) {
 		super(props);
 		this.props = props;
 	}
 
 	render(): void {
-			Utils.pluralize('', '');
 			var activeTodoWord = Utils.pluralize(this.props.count, 'item');
 			var clearButton = null;
 

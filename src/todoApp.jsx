@@ -1,33 +1,35 @@
 /* @flow */
-import State from './state.js';
+import State from './state';
 import React from 'react';
 import {Router} from 'director';
 import TodoFooter from './todoFooter';
 import TodoItem from './todoItem';
 import TodoModel from './todoModel';
-import keys from './keys.js'
+import keys from './keys'
 
-type AppState = {
+declare class AppState {
 	nowShowing: any;
-	editing: ?boolean;
-	newwTodo: string;
+	editing: boolean;
+	newTodo: string;
 };
 
-class Props {
-	modell: TodoModel;
+type Props = {
+	model: TodoModel;
 };
 
+type Todo = Todo;
 
-export default class TodoApp extends React.Component {
+
+export default class TodoApp extends React.Component<void, Props, AppState> {
 	props: Props;
 	state: AppState;
-	static defaultProps: {};
+	static defaultProps: void;
 	constructor(props: Props) {
 		super(props);
 		this.props = props;
 		this.state = {
 			nowShowing: State.ALL_TODOS,
-			editing: null,
+			editing: false,
 			newTodo: ""
 		}
 	}
@@ -43,7 +45,11 @@ export default class TodoApp extends React.Component {
 	}
 
 	handleChange (event: Event) {
-			this.setState({newTodo: event.target.value});
+			if (event.target instanceof HTMLInputElement) {
+				this.setState({newTodo: event.target.value});
+			} else {
+				throw new Error('cannot handle todo change');
+			}
 	}
 
 	handleNewTodoKeyDown (event: Event) {
@@ -56,14 +62,16 @@ export default class TodoApp extends React.Component {
 		var val = this.state.newTodo.trim();
 
 		if (val) {
-			this.props.model.addTodo(12);
+			this.props.model.addTodo(val);
 			this.setState({newTodo: ''});
 		}
 	}
 
 	toggleAll(event: Event) {
-		var checked = event.target.checked;
-		this.props.model.toggleAll(checked);
+		if (event.target instanceof HTMLInputElement) {
+			var checked = event.target.checked;
+			this.props.model.toggleAll(checked);
+		}
 	}
 
 	toggle(todoToToggle: Todo) {
@@ -80,11 +88,11 @@ export default class TodoApp extends React.Component {
 
 	save(todoToSave: Todo, text: string) {
 		this.props.model.save(todoToSave, text);
-		this.setState({editing: null});
+		this.setState({editing: false});
 	}
 
 	cancel() {
-		this.setState({editing: null});
+		this.setState({editing: false});
 	}
 
 	clearCompleted() {
